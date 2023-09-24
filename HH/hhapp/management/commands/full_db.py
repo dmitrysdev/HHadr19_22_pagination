@@ -217,9 +217,9 @@ def parce(url, vacancy, pages='3', where='all'):
 
 
 def start(vacancy, pages='3', where='all'):
-    sk1 = parce_sup(vacancy, pages=pages, where=where)
+    sk1 = ''#parce_sup(vacancy, pages=pages, where=where)
     sk2 = parce(url='https://api.hh.ru/vacancies', vacancy=vacancy, pages=pages, where=where)
-    sk3 = parce(url='https://api.zarplata.ru/vacancies', vacancy=vacancy, pages=pages, where=where)
+    sk3 = ''#parce(url='https://api.zarplata.ru/vacancies', vacancy=vacancy, pages=pages, where=where)
     result = {'keywords': vacancy}
     res = (it for it in (sk1, sk2, sk3) if it)
     sk = {}
