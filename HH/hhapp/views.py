@@ -1,5 +1,6 @@
 import os
 
+import requests
 from dotenv import load_dotenv
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -10,6 +11,7 @@ from requests import get
 from .forms import ReqForm
 from .models import Vacancy, Word, Wordskill, Area
 from hhapp.management.commands.full_db import Command
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 load_dotenv()
 
@@ -37,6 +39,19 @@ def result(request):
             s = Wordskill.objects.filter(id_word_id=v.id).all()
             vac = Vacancy.objects.filter(word_id=v).all()
             print(vac, v, s, sep='\n')
+            paginator = Paginator(vac, 2)
+
+            page = request.GET.get('http://127.0.0.1:8000/result/')
+
+            print(page)
+
+            try:
+                vac = paginator.page(page)
+            except PageNotAnInteger:
+                vac = paginator.page(1)
+            except EmptyPage:
+                vac = paginator.page(paginator.num_pages)
+
             return render(request, 'hhapp/about.html', context={'vac': vac, 'word': v, 'skills': s})
         else:
             form1 = ReqForm

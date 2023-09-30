@@ -122,7 +122,7 @@ def parce_sup(vacancy, pages='3', where='all'):
 
 
 def parce(url, vacancy, pages='3', where='all'):
-    # url = 'https://api.hh.ru/vacancies'
+    url = 'https://api.hh.ru/vacancies'
     rate = ExchangeRates()
     vacancy = vacancy if where == 'all' else f'NAME: {vacancy}' if where == 'name' else f'COMPANY_NAME: {vacancy}'
     p = {'text': vacancy}
@@ -155,7 +155,12 @@ def parce(url, vacancy, pages='3', where='all'):
             employer_link = res['employer']['logo_urls']['original'] if res['employer'].get('logo_urls', 0) else None
             title = res['name']
             published = res['published_at']
-            schedule = res['schedule']['name']
+            #schedule = vac['place_of_work']
+            if res['schedule'] != None:
+                schedule = res['schedule']['name']
+            else:
+                schedule = ''
+
             type = res['type']['name']
             are = Area.objects.filter(name=area_name).first()
             if url.startswith('https://api.hh'):
@@ -263,7 +268,7 @@ def add_skills(res):
     for item in res['requirements']:
         try:
             r = Skill.objects.get(name=item['name'])
-            print('skill not added')
+            #print('skill not added')
         except ObjectDoesNotExist:
             Skill.objects.create(name=item['name'])
 
